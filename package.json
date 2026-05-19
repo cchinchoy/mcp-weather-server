@@ -1,0 +1,29 @@
+{
+  "name": "weather-mcp-server",
+  "version": "1.0.0",
+  "description": "Weather MCP Server using Open-Meteo API",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsc"
+  },
+  "keywords": [
+    "mcp",
+    "weather",
+    "typescript",
+    "ai",
+    "open-meteo"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "dotenv": "^17.2.3",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.7.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
+  }
+}
