@@ -2,7 +2,7 @@ export type GeocodingLocation = {
     name:string;
     country: string;
     latitude: number;
-    longtitude: number;
+    longitude: number;
     timezone?: string;
 
 };
@@ -21,10 +21,10 @@ export type CurrentWeatherResult = {
 
 export type GeocodingApiResponse = {
     results?: Array<{
-        nsme: string;
+        name: string;
         country: string;
         latitude: number;
-        longtitude: number;
+        longitude: number;
         timezone?: string;
     }>;
     };
