@@ -1,10 +1,11 @@
 import { appConfig } from "../config/appConfig.js";
-
+import { logger } from "../utils/logger.js";
 import type { CurrentWeatherApiResponse, CurrentWeatherResult, GeocodingApiResponse, GeocodingLocation } from "../types/weatherTypes.js";
 
 async function geocodeCity(city: string): Promise<GeocodingLocation> {
-    const url = `${appConfig.geocodingApiBaseUrl}/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`;
 
+    const url = `${appConfig.geocodingApiBaseUrl}/search?name=${city}&count=1&language=en&format=json`;
+    logger.info(url);
     const response = await fetch(url);
 
     if (!response.ok) {
@@ -15,6 +16,7 @@ async function geocodeCity(city: string): Promise<GeocodingLocation> {
     const data = (await response.json()) as GeocodingApiResponse;
 
     const location = data.results?.[0];
+    logger.info(`Geocoding API response, {city, geocodingResults: data.results?.length ?? 0}`);
 
     if (!location){
         throw new Error(`No geocoding results found for city: ${city}`);
@@ -36,19 +38,19 @@ export async function getCurrentWEather(city:string): Promise<CurrentWeatherResu
         `${appConfig.weatherApiBaseUrl}/forecast?`+
         `latitude=${location.latitude}`+
         `&longitude=${location.longitude}`+
-        `&current=temperature_2m, apparent_temperature, relative_humidity_2m, wind_speed_10m, wind_direction_10m,weather_code, is_day`+
+        `&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,wind_direction_10m,weather_code,is_day`+
         `&timezone=auto`;
         
         const response = await fetch(url);
 
         if(!response.ok){
-            throw new Error(`Weather API request failed with status`+
+            throw new Error(`Weather API request failed with status `+
                 `${response.status}: ${response.statusText}`
             );
         }
 
         const data = (await response.json()) as CurrentWeatherApiResponse;
-
+        logger.info(`Weather API response, {city, resolvedLocation: location.name, country: location.country, weatherDataTime: data.current.time}`);
         return {
             location,
             temperature: data.current.temperature_2m,
